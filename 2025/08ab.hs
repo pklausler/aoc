@@ -5,14 +5,12 @@ pairs [] = []
 pairs (x:ys) = [ (x,y) | y<-ys ] ++ pairs ys
 dist (x,y,z) (x',y',z') = square (x-x') + square (y-y') + square (z-z')
   where square a = a * a
-addPair (boxToRep, repToSet) (a,b)
-  | a' == b' = (boxToRep, repToSet)
-  | otherwise = (boxToRep', repToSet')
+addPair (boxToRep, repToSet) (a,b) = (boxToRep', repToSet')
   where a' = boxToRep M.! a
         b' = boxToRep M.! b
-        boxToRep' = M.union (M.fromList [(x,a')|x<-S.toList bSet]) boxToRep
-        repToSet' = M.insertWith S.union a' bSet $ M.delete b' repToSet
-        bSet = repToSet M.! b'
+        boxToRep' = M.union (M.fromList [(x,a')|x<-S.toList b'Set]) boxToRep
+        repToSet' = M.insertWith S.union a' b'Set $ M.delete b' repToSet
+        b'Set = repToSet M.! b'
 partB boxToRep repToSet (((a@(ax,_,_)),(b@(bx,_,_))):rest)
   | M.size repToSet' == 1 = ax * bx
   | otherwise = partB boxToRep' repToSet' rest
